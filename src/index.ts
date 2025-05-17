@@ -5,8 +5,8 @@ import { Modal } from './components/common/Modal';
 import { StoreItem, StoreItemPreview } from './components/Card';
 import { AppState, Product } from './components/AppData';
 import { ensureElement, cloneTemplate } from './utils/utils';
-import { ApiResponse, IOrderForm, IProduct } from './types';
-import { API_URL } from './utils/constants';
+import { ApiResponse, CategoryType, IOrderForm, IProduct } from './types';
+import { API_URL, CDN_URL } from './utils/constants';
 import './scss/styles.scss';
 import { Basket, StoreItemBasket } from './components/Basket';
 import { Order } from './components/Order';
@@ -44,14 +44,33 @@ const success = new Success('order-success', cloneTemplate(successTemplate), {
   }
 })
 
+export interface IProductAPI {
+  // уникальный ID
+  id: string;
+
+  // описание товара
+  description: string;
+
+  // ссылка на картинку
+  image: string;
+
+  // название
+  title: string;
+
+  // категория товара
+  category: CategoryType;
+
+  // цена товара, может быть null
+  price: number | null;
+
+}
+
 // Получаем лоты с сервера
 api
-  .get('/product')
-  .then((res: ApiResponse) => {
+  .get('/product/')
+  .then((res: ApiListResponse<IProductAPI>) => {
+    console.log(res)
     appData.setStore(res.items as IProduct[]);
-  })
-  .catch((err) => {
-    console.error(err);
   });
 
 // Изменились элементы каталога

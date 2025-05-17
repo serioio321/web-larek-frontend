@@ -14,6 +14,7 @@ export type CategoryMapping = {
 export type FormErrors = Partial<Record<keyof IOrderForm, string>>;
 
 export interface ApiResponse {
+  total: number;
   items: IProduct[];
 }
 
